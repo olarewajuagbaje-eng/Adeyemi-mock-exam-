@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adeyemi University of Education — Mock Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #0d1f3c;
+    --gold: #c9a84c;
+    --gold-light: #e8c96e;
+    --gold-pale: #f5e6b8;
+    --cream: #fdf8ee;
+    --white: #ffffff;
+    --green: #1a6b3a;
+    --green-bg: #d4f0df;
+    --red: #8b1a1a;
+    --red-bg: #fde8e8;
+    --muted: #4a5568;
+    --border: #d4b896;
+    --shadow: rgba(10,22,40,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    border-bottom: 4px solid var(--gold);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 24px var(--shadow);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 32px;
+  }
+  .crest {
+    width: 56px; height: 56px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 900;
+    color: var(--navy);
+    flex-shrink: 0;
+    letter-spacing: -1px;
+  }
+  .header-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--gold);
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+  }
+  .header-text p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; color: #8aa4cc;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .header-right {
+    margin-left: auto;
+    text-align: right;
+  }
+  .session-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; color: var(--gold);
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.35);
+    padding: 4px 12px; border-radius: 3px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--deep) 0%, #162a50 60%, #1a3360 100%);
+    padding: 48px 32px 40px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px
+    );
+    pointer-events: none;
+  }
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--gold-light);
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .hero p {
+    color: #8aa4cc; font-size: 0.95rem;
+    font-style: italic; position: relative;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 32px;
+    margin-top: 20px; position: relative;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: var(--gold-pale);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 6px 16px; border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── NAV ── */
+  .subject-nav {
+    display: flex; gap: 0;
+    border-bottom: 2px solid var(--border);
+    background: var(--white);
+    overflow-x: auto;
+  }
+  .nav-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 14px 28px;
+    border: none; background: none;
+    color: var(--muted); cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--navy); background: rgba(201,168,76,0.07); }
+  .nav-btn.active { color: var(--navy); border-bottom-color: var(--gold); background: var(--cream); }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  .subject-panel { display: none; }
+  .subject-panel.active { display: block; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding-left: 16px;
+    margin: 32px 0 6px;
+  }
+  .section-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding-left: 20px; margin-bottom: 24px;
+  }
+
+  /* ── INSTRUCTIONS BOX ── */
+  .instructions {
+    background: var(--deep);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    color: var(--cream);
+  }
+  .instructions h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1rem; margin-bottom: 10px;
+  }
+  .instructions ul { padding-left: 18px; }
+  .instructions li { margin: 4px 0; font-size: 0.88rem; line-height: 1.6; color: #c8d8f0; }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--white);
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+  .q-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: var(--gold);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 6px; display: block;
+  }
+  .q-text {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--navy); line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid #d0d8e4;
+    border-radius: 5px;
+    background: var(--cream);
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.88rem; color: var(--navy);
+    text-align: left;
+    transition: all 0.18s;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: #fdf3e0;
+    transform: translateX(2px);
+  }
+  .option-btn .opt-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600; font-size: 0.78rem;
+    min-width: 20px; color: var(--gold);
+  }
+  .option-btn.correct {
+    background: var(--green-bg) !important;
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+  }
+  .option-btn.correct .opt-label { color: var(--green); }
+  .option-btn.wrong {
+    background: var(--red-bg) !important;
+    border-color: var(--red) !important;
+    color: var(--red) !important;
+  }
+  .option-btn.wrong .opt-label { color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback-box {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem; line-height: 1.6;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb {
+    background: #ecfbf2; border-left: 3px solid var(--green); color: #1a5c38;
+  }
+  .feedback-box.wrong-fb {
+    background: #fef2f2; border-left: 3px solid var(--red); color: #7f1d1d;
+  }
+  .feedback-box strong { display: block; margin-bottom: 4px; }
+
+  /* ── SCORE PANEL ── */
+  .score-panel {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin: 32px 0;
+    text-align: center;
+    border: 2px solid var(--gold);
+  }
+  .score-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--gold); margin-bottom: 16px;
+  }
+  .score-grid {
+    display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .score-item { text-align: center; }
+  .score-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 2.2rem; font-weight: 600; color: var(--gold-light);
+    display: block;
+  }
+  .score-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #8aa4cc;
+  }
+  .grade-badge {
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    padding: 8px 28px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .grade-a { background: var(--green); color: white; }
+  .grade-b { background: #2563eb; color: white; }
+  .grade-c { background: #d97706; color: white; }
+  .grade-d { background: #6b7280; color: white; }
+  .grade-f { background: var(--red); color: white; }
+
+  .submit-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--gold);
+    color: var(--navy);
+    border: none; border-radius: 4px;
+    padding: 12px 32px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+    display: block; width: 100%; max-width: 300px; margin: 20px auto 0;
+  }
+  .submit-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  /* ── THEORY SECTION ── */
+  .theory-card {
+    background: var(--white);
+    border: 1px solid #ddd;
+    border-top: 3px solid var(--navy);
+    border-radius: 6px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .theory-card .q-number { color: var(--navy); }
+  .theory-q { font-size: 0.95rem; line-height: 1.7; color: var(--navy); font-weight: 600; margin-bottom: 12px; }
+  .marks-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; background: var(--gold-pale);
+    color: var(--navy); border: 1px solid var(--border);
+    padding: 2px 10px; border-radius: 2px; margin-left: 8px;
+    font-weight: 600;
+  }
+  .marking-guide {
+    background: #f8faf5;
+    border: 1px dashed #6aab81;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .marking-guide h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--green);
+    margin-bottom: 8px;
+  }
+  .marking-guide p, .marking-guide li {
+    font-size: 0.85rem; color: #2d4a3e; line-height: 1.7;
+  }
+  .marking-guide ul { padding-left: 16px; }
+  .toggle-guide {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.08em;
+    color: var(--green); background: none;
+    border: 1px solid var(--green);
+    border-radius: 3px; padding: 5px 14px;
+    cursor: pointer; margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .toggle-guide:hover { background: var(--green); color: white; }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    border: none; border-top: 2px dashed var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: #e8e0d4; border-radius: 2px; height: 6px; margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px; transition: width 0.3s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; color: var(--muted);
+    letter-spacing: 0.08em; text-align: right; margin-bottom: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    border-top: 2px solid var(--gold);
+    text-align: center;
+    padding: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; color: #5a7aaa;
+    letter-spacing: 0.1em;
+  }
+  footer span { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .header-inner { padding: 12px 16px; }
+    main { padding: 20px 12px 60px; }
+    .score-grid { gap: 20px; }
+    .hero { padding: 32px 16px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="crest">AUE</div>
+    <div class="header-text">
+      <h1>Adeyemi University of Education</h1>
+      <p>Ondo · Computer-Based Test Practice System</p>
+    </div>
+    <div class="header-right">
+      <span class="session-badge">2024/2025 Session</span>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <h2>Mock Examination — 200 Level</h2>
+  <p>Practice CBT System · Select your subject below to begin</p>
+  <div class="hero-meta">
+    <span>📘 2 Subjects</span>
+    <span>⏱ Self-Paced</span>
+    <span>✅ Instant Marking</span>
+    <span>📝 Theory Included</span>
+  </div>
+</div>
+
+<nav class="subject-nav">
+  <button class="nav-btn active" onclick="showSubject('math')">MTH 201 — Numerical Methods</button>
+  <button class="nav-btn" onclick="showSubject('ent')">ENT 201 — Entrepreneurship & Innovation</button>
+</nav>
+
+<main>
+
+<!-- ======================= SUBJECT 1: MATHEMATICS ======================= -->
+<div id="subj-math" class="subject-panel active">
+  <div class="section-title">MTH 201: Numerical Methods & Analysis</div>
+  <div class="section-sub">200 Level · First Semester · 60 MCQ + 5 Theory</div>
+
+  <div class="instructions">
+    <h3>📋 General Instructions</h3>
+    <ul>
+      <li>This paper consists of Section A (60 MCQs) and Section B (5 Theory questions).</li>
+      <li>Read each question carefully before selecting your answer.</li>
+      <li>Click an option — feedback appears immediately.</li>
+      <li>Your score is calculated when you click <strong>Submit & View Score</strong>.</li>
+      <li>Theory sample answers can be revealed using the "Show Marking Guide" button.</li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="font-size:1.1rem;">SECTION A — Objective (60 Questions)</div>
+  <div class="section-sub">Each question carries 1 mark · Total: 60 marks</div>
+
+  <div class="progress-label" id="math-progress-label">0 of 60 answered</div>
+  <div class="progress-wrap"><div class="progress-bar" id="math-progress-bar"></div></div>
+
+  <div id="math-questions"></div>
+
+  <button class="submit-btn" onclick="submitExam('math')">Submit & View Score →</button>
+  <div id="math-score-panel" style="display:none;"></div>
+
+  <hr class="section-divider">
+  <div class="section-title" style="font-size:1.1rem;">SECTION B — Theory Questions</div>
+  <div class="section-sub">Answer all 5 questions · Marks as indicated</div>
+  <div id="math-theory"></div>
+</div>
+
+<!-- ======================= SUBJECT 2: ENTREPRENEURSHIP ======================= -->
+<div id="subj-ent" class="subject-panel">
+  <div class="section-title">ENT 201: Entrepreneurship & Innovation</div>
+  <div class="section-sub">200 Level · Second Semester · 60 MCQ + 5 Theory</div>
+
+  <div class="instructions">
+    <h3>📋 General Instructions</h3>
+    <ul>
+      <li>This paper consists of Section A (60 MCQs) and Section B (5 Theory questions).</li>
+      <li>Each MCQ has only ONE correct answer.</li>
+      <li>Click an option to check — green means correct, red means wrong.</li>
+      <li>Click <strong>Submit & View Score</strong> when you finish Section A.</li>
+      <li>Theory answers are for guidance — use the "Show Marking Guide" button.</li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="font-size:1.1rem;">SECTION A — Objective (60 Questions)</div>
+  <div class="section-sub">Each question carries 1 mark · Total: 60 marks</div>
+
+  <div class="progress-label" id="ent-progress-label">0 of 60 answered</div>
+  <div class="progress-wrap"><div class="progress-bar" id="ent-progress-bar"></div></div>
+
+  <div id="ent-questions"></div>
+
+  <button class="submit-btn" onclick="submitExam('ent')">Submit & View Score →</button>
+  <div id="ent-score-panel" style="display:none;"></div>
+
+  <hr class="section-divider">
+  <div class="section-title" style="font-size:1.1rem;">SECTION B — Theory Questions</div>
+  <div class="section-sub">Answer all 5 questions · Marks as indicated</div>
+  <div id="ent-theory"></div>
+</div>
+
+</main>
+
+<footer>
+  <span>Adeyemi University of Education</span> · Mock Exam Practice System · 2024/2025
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+
+const mathQuestions = [
+  // NUMERICAL INTEGRATION — TRAPEZOIDAL
+  { q:"What is the main purpose of numerical integration?", opts:["To find derivatives of functions","To approximate the value of a definite integral when exact methods fail","To solve differential equations only","To plot graphs of functions"], ans:1, exp:"Numerical integration is used when the exact value of a definite integral cannot be obtained using elementary techniques — for example, when the function has no closed-form antiderivative." },
+  { q:"In the Trapezoidal Rule, the region under the curve between two successive ordinates is approximated by:", opts:["A rectangle","A triangle","A trapezium","A parabola"], ans:2, exp:"The Trapezoidal Rule replaces the area under the curve between two points with a trapezium (trapezoid), whose two parallel sides are the function values at the endpoints." },
+  { q:"The formula for the Trapezoidal Rule is:", opts:["h/2[y₀ + yₙ + 2(y₁+…+yₙ₋₁)]","h/3[y₀ + yₙ + 4(odd) + 2(even)]","h[y₀ + yₙ + y₁+…+yₙ₋₁]","2h[y₀ + yₙ]"], ans:0, exp:"The Trapezoidal Rule sums the first and last ordinates once each, and all interior ordinates twice, then multiplies by h/2. This accounts for shared boundaries between adjacent trapezia." },
+  { q:"If an interval [a, b] is divided into n equal parts, the step size h equals:", opts:["n/(b-a)","(b-a)/n","(b+a)/n","(b-a)×n"], ans:1, exp:"The step size h is the width of each subinterval. If [a,b] is divided into n equal parts, then h = (b - a)/n." },
+  { q:"Using the Trapezoidal Rule with 6 ordinates means dividing the interval into:", opts:["6 subintervals","5 subintervals","7 subintervals","4 subintervals"], ans:1, exp:"6 ordinates correspond to 6 points (x₀ to x₅), which create 5 subintervals. Always: number of subintervals = number of ordinates − 1." },
+  { q:"What happens to accuracy as the number of subintervals increases in the Trapezoidal Rule?", opts:["Accuracy decreases","Accuracy stays the same","Accuracy generally increases","The rule becomes invalid"], ans:2, exp:"More subintervals mean smaller h values, so each trapezium more closely matches the curve. This generally reduces the approximation error." },
+  { q:"The Trapezoidal Rule gives the EXACT answer when the function f(x) is:", opts:["A quadratic","A cubic","A linear function","An exponential"], ans:2, exp:"When f(x) is linear, the straight-line approximation of the Trapezoidal Rule matches the curve perfectly, giving an exact result." },
+  { q:"The approximate value of ∫₁² ln(x)dx using the Trapezoidal Rule with 6 ordinates is:", opts:["0.3846","0.5000","0.6931","0.2500"], ans:0, exp:"Following the worked example in your lecture notes: with h = 0.2 and 6 ordinates (x = 1.0, 1.2, 1.4, 1.6, 1.8, 2.0), applying the formula gives ≈ 0.3846." },
+  { q:"In the Trapezoidal Rule, interior ordinates (y₁ to yₙ₋₁) are multiplied by:", opts:["1","2","4","3"], ans:1, exp:"Interior ordinates appear as the right side of one trapezium and the left side of the next, so they are counted twice (multiplied by 2)." },
+  { q:"The Trapezoidal Rule is also called:", opts:["Simpson's rule","Numerical quadrature","Gaussian elimination","Newton-Raphson method"], ans:1, exp:"Numerical integration is broadly called numerical quadrature. The Trapezoidal Rule is one specific quadrature method." },
+  
+  // SIMPSON'S RULE
+  { q:"Simpson's Rule improves on the Trapezoidal Rule by approximating the curve with:", opts:["Straight lines","Parabolic arcs","Cubic polynomials","Horizontal lines"], ans:1, exp:"Simpson's Rule fits a parabola through every three consecutive points, capturing curvature that the straight-line Trapezoidal approximation misses." },
+  { q:"Simpson's Rule requires that the number of subintervals must be:", opts:["Odd","Even","A prime number","Any positive integer"], ans:1, exp:"Simpson's Rule works by pairing subintervals (each pair covered by one parabola), so the total number of subintervals must be even." },
+  { q:"In Simpson's Rule, odd-numbered interior ordinates are multiplied by:", opts:["1","2","4","3"], ans:2, exp:"In the Composite Simpson's Rule, odd-indexed ordinates (y₁, y₃, y₅, …) are multiplied by 4. These are the midpoints of each parabolic strip, which have the greatest influence." },
+  { q:"In Simpson's Rule, even-numbered interior ordinates are multiplied by:", opts:["1","2","4","3"], ans:1, exp:"Even-indexed interior ordinates (y₂, y₄, …) are shared between adjacent parabolic strips, so they appear twice in the total sum — multiplied by 2." },
+  { q:"The formula for the Composite Simpson's Rule is:", opts:["h/2[y₀+yₙ+2(y₁+…)]","h/3[y₀+y₂ₙ+4(odd)+2(even)]","h[y₀+4y₁+2y₂+…+yₙ]","2h/3[y₀+yₙ+4(mid)]"], ans:1, exp:"The correct formula is: (h/3)[y₀ + y₂ₙ + 4(sum of odd ordinates) + 2(sum of even interior ordinates)]." },
+  { q:"The approximate value of ∫₀¹ e^(−x²) dx using Simpson's Rule with 5 ordinates is:", opts:["0.7469","0.5000","0.8000","0.9000"], ans:0, exp:"Using h = 0.25 with points at 0, 0.25, 0.5, 0.75, 1.0, the worked example in your notes gives ≈ 0.7469." },
+  { q:"Which rule is generally MORE accurate for the same number of ordinates?", opts:["Trapezoidal Rule","Simpson's Rule","They are equally accurate","Neither is accurate"], ans:1, exp:"Simpson's Rule uses parabolic arcs instead of straight lines, capturing curvature better and therefore giving a more accurate approximation for the same number of points." },
+  { q:"Why does Simpson's Rule need an even number of subintervals?", opts:["To simplify arithmetic","Because it groups points into pairs of 2 subintervals per parabola","To avoid fractions","Because ordinates must be even numbers"], ans:1, exp:"Each parabola in Simpson's Rule spans exactly 2 subintervals (3 points). To tile the whole interval, the total number of subintervals must be even." },
+  { q:"For Simpson's Rule with 5 ordinates, h = (b−a)/__ :", opts:["4","5","3","6"], ans:0, exp:"5 ordinates = 4 subintervals. So h = (b−a)/4." },
+  { q:"The area under a parabola through (x₀,y₀), (x₁,y₁), (x₂,y₂) equals:", opts:["h(y₀+y₁+y₂)","h/3(y₀+4y₁+y₂)","h/2(y₀+4y₁+y₂)","2h/3(y₀+y₁+y₂)"], ans:1, exp:"This is the fundamental result of Simpson's Rule for one strip: area = (h/3)(y₀ + 4y₁ + y₂), where y₁ is the midpoint ordinate." },
+  
+  // ITERATIVE METHODS / ROOT FINDING
+  { q:"A root of f(x) = 0 is a value x* such that:", opts:["f(x*) = 1","f(x*) = 0","f'(x*) = 0","f(x*) > 0"], ans:1, exp:"A root (zero) of the equation f(x) = 0 is simply the value of x that makes f(x) equal to zero." },
+  { q:"The One-Point Iteration Method works by rewriting f(x) = 0 as:", opts:["f(x) = 1","x = h(x)","x = f'(x)","f'(x) = 0"], ans:1, exp:"The one-point method reformulates the equation into x = h(x), then iterates: xₙ₊₁ = h(xₙ), generating a sequence that (ideally) converges to the root." },
+  { q:"In one-point iteration, the sequence converges if:", opts:["|h'(x*)| > 1","|h'(x*)| < 1","|h'(x*)| = 1","h(x*) = 0"], ans:1, exp:"Convergence requires that the absolute value of the derivative of h at the root is less than 1. If it exceeds 1, the iterations tend to diverge." },
+  { q:"If |h'(x*)| > 1 at the root, the iteration will:", opts:["Converge quickly","Converge slowly","Diverge","Give the exact root"], ans:2, exp:"When |h'(x*)| > 1, the errors grow with each iteration (instead of shrinking), so the sequence moves away from the root — it diverges." },
+  { q:"For the equation x² − 2x − 3 = 0, if we set h(x) = (x² − 3)/2, then h'(x) =", opts:["x − 1","x","2x − 2","x/2"], ans:1, exp:"Differentiating h(x) = (x² − 3)/2 gives h'(x) = 2x/2 = x." },
+  { q:"Newton's Method formula is:", opts:["xₙ₊₁ = xₙ − f(xₙ)/f'(xₙ)","xₙ₊₁ = xₙ + f(xₙ)/f'(xₙ)","xₙ₊₁ = f(xₙ)/f'(xₙ)","xₙ₊₁ = xₙ·f'(xₙ)"], ans:0, exp:"Newton's Method (Newton-Raphson) updates the current estimate by subtracting the ratio of the function value to its derivative at that point." },
+  { q:"Newton's Method is derived using:", opts:["Taylor series expansion","The Trapezoidal Rule","Gaussian elimination","Simpson's formula"], ans:0, exp:"Newton's Method comes from the first-order Taylor expansion of f(x) around xₙ: setting f(xₙ) + (xₙ₊₁ − xₙ)f'(xₙ) ≈ 0 and solving." },
+  { q:"Newton's Method is characterized by _______ convergence near the root:", opts:["Linear (first-order)","Quadratic (second-order)","Cubic (third-order)","No convergence"], ans:1, exp:"Newton's Method has quadratic (second-order) convergence, meaning the number of correct decimal places roughly doubles with each iteration when close to the root." },
+  { q:"The approximate solution of x³ − 5 = 0 using Newton's Method starting at x₀ = 1, after 5 iterations, is:", opts:["1.70998","2.00000","1.50000","1.90000"], ans:0, exp:"As shown in the worked example in your notes, Newton's Method converges to x ≈ 1.70998, which is the cube root of 5." },
+  { q:"Fixed-Point Iteration rewrites f(x) = 0 as x = φ(x). The iteration is of first order if:", opts:["|φ'(α)| = 0","φ'(α) ≠ 0","φ''(α) = 0","φ(α) > 1"], ans:1, exp:"First-order (linear) convergence occurs when |φ'(α)| ≠ 0. If φ'(α) = 0, the convergence becomes second-order (faster)." },
+  
+  // LINE INTEGRALS
+  { q:"A line integral computes the accumulated effect of a function or field:", opts:["Over a 2D region","Along a specific curve C","Over a 3D volume","At a single point"], ans:1, exp:"A line integral (path integral) integrates a function or vector field along a specific curve or path C in the plane or space." },
+  { q:"The line integral ∮_C P dx + Q dy around a CLOSED path uses the symbol:", opts:["∫","∮","Σ","∂"], ans:1, exp:"The circle through the integral sign (∮) denotes integration around a closed curve. It is called a contour integral or closed line integral." },
+  { q:"Reversing the direction of a line integral:", opts:["Doubles the value","Gives the same value","Changes the sign","Makes it zero"], ans:2, exp:"Changing the direction of traversal reverses the sign: ∫_BA = −∫_AB. This is a fundamental property of line integrals." },
+  { q:"A line integral is path-INDEPENDENT (conservative) if and only if:", opts:["P = Q","∂P/∂y = ∂Q/∂x","∂P/∂x = ∂Q/∂y","P + Q = 0"], ans:1, exp:"The condition for path-independence is that the vector field is conservative, which happens when the mixed partial derivatives are equal: ∂P/∂y = ∂Q/∂x." },
+  { q:"If ∂P/∂y = ∂Q/∂x, there exists a potential function φ such that:", opts:["∇φ = 0","dφ = P dx + Q dy","φ = P + Q","∂φ/∂x = Q"], ans:1, exp:"For a conservative field, the potential function φ satisfies dφ = P dx + Q dy, meaning ∂φ/∂x = P and ∂φ/∂y = Q." },
+  { q:"For a conservative field, the line integral from A to B equals:", opts:["φ(A) + φ(B)","φ(A) − φ(B)","φ(B) − φ(A)","0"], ans:2, exp:"For a path-independent field, ∫_C P dx + Q dy = φ(B) − φ(A), regardless of the path taken — only the endpoints matter." },
+  { q:"Green's Theorem relates a line integral around C to:", opts:["A triple integral over a volume","A double integral over the region R enclosed by C","A single integral along C","A surface integral"], ans:1, exp:"Green's Theorem: ∮_C P dx + Q dy = ∬_R (∂Q/∂x − ∂P/∂y) dx dy. It converts a closed line integral to a double integral over the enclosed region." },
+  { q:"In Green's Theorem, the curve C must be:", opts:["Open and clockwise","Closed and counterclockwise (positively oriented)","Vertical only","A straight line"], ans:1, exp:"Green's Theorem applies to closed curves oriented counterclockwise (positive orientation). Clockwise orientation gives the negative of the double integral." },
+  { q:"For the vector field P = y, Q = x, the value ∂Q/∂x − ∂P/∂y equals:", opts:["2","0","1","-1"], ans:1, exp:"∂Q/∂x = ∂(x)/∂x = 1, and ∂P/∂y = ∂(y)/∂y = 1. So ∂Q/∂x − ∂P/∂y = 1 − 1 = 0." },
+  { q:"If ∂Q/∂x − ∂P/∂y = 2 over a region R of area A, then ∮_C P dx + Q dy =", opts:["A","2A","A/2","4A"], ans:1, exp:"By Green's Theorem: ∮ = ∬ 2 dA = 2 × Area. As in the worked example with the unit circle: 2 × π = 2π." },
+  
+  // DOUBLE & TRIPLE INTEGRALS
+  { q:"A double integral ∬_R f(x,y) dA represents:", opts:["Length along a curve","Area of a region","Volume under the surface z = f(x,y) above R","Perimeter of R"], ans:2, exp:"The double integral gives the volume under the surface z = f(x,y) over the 2D region R. When f = 1, it gives the area of R." },
+  { q:"The double integral ∬_R 1 dA over a region R gives:", opts:["Volume of R","Perimeter of R","Area of R","0"], ans:2, exp:"When f(x,y) = 1, the 'height' is constantly 1, so the volume collapses to just the area of the base region R." },
+  { q:"For the double integral ∫₀²∫₀³ (x+y) dy dx, integration is performed:", opts:["First with respect to x, then y","First with respect to y, then x","Both simultaneously","Order does not matter for all functions"], ans:1, exp:"In iterated integrals written as ∫dx∫dy f(x,y) dy dx, the innermost integral (with respect to y) is evaluated first, treating x as a constant." },
+  { q:"Which property states ∬(f+g)dA = ∬f dA + ∬g dA ?", opts:["Symmetry","Linearity","Additivity over subregions","Fubini's theorem"], ans:1, exp:"This is the linearity property of double integrals — the integral of a sum equals the sum of the integrals." },
+  { q:"A triple integral ∭_R f(x,y,z) dV generalizes double integrals to:", opts:["2 dimensions","3 dimensions","4 dimensions","1 dimension"], ans:1, exp:"Triple integrals extend the concept to three dimensions, integrating a function over a 3D region V." },
+  { q:"If f(x,y,z) = 1 in a triple integral, the result gives:", opts:["Surface area","Volume of the 3D region","Mass density","Perimeter"], ans:1, exp:"∭_R 1 dV = Volume of R. When the integrand is 1, the integral simply measures the volume of the 3D region." },
+  { q:"The volume of a tetrahedron bounded by x≥0, y≥0, z≥0, x+y+z≤2 is:", opts:["4/3","8/3","2","1"], ans:0, exp:"Setting up ∫₀²∫₀^(2-x)∫₀^(2-x-y) dz dy dx and evaluating gives 4/3, as shown in the worked example." },
+  { q:"Fubini's Theorem states that for a continuous function f, ∫∫ f dA can be evaluated as:", opts:["An iterated integral in any order","Only in the x-then-y order","Only as a single integral","A line integral"], ans:0, exp:"Fubini's Theorem guarantees that for continuous functions, the order of integration can be swapped without changing the result." },
+  { q:"Which of the following best describes numerical quadrature?", opts:["Exact integration using calculus","Numerical approximation of definite integrals","Finding roots of equations","Plotting graphs numerically"], ans:1, exp:"Numerical quadrature is another name for numerical integration — the process of approximating definite integrals using computational methods." },
+  { q:"The error in the Trapezoidal Rule is of order:", opts:["O(h)","O(h²)","O(h³)","O(h⁴)"], ans:1, exp:"The global truncation error of the Trapezoidal Rule is O(h²) — meaning halving h reduces the error by a factor of about 4." },
+  { q:"The error in Simpson's Rule is of order:", opts:["O(h²)","O(h³)","O(h⁴)","O(h)"], ans:2, exp:"Simpson's Rule has a global error of O(h⁴), making it much more accurate than the Trapezoidal Rule for smooth functions." },
+  { q:"In the cobweb diagram for iterative methods, the fixed point x* is where:", opts:["y = h(x) crosses the x-axis","y = h(x) intersects y = x","f(x) = 0","h(x) = 0"], ans:1, exp:"The fixed point (root) is the intersection of the curve y = h(x) and the line y = x, since at the solution, x* = h(x*)." },
+  { q:"The iteration xₙ₊₁ = (1/3)(xₙ² + 1) converges to approximately:", opts:["0.3820","1.000","2.618","0.500"], ans:0, exp:"As shown in Table 1 of your lecture notes, for starting values x₀ = 0, 1, 2, the iterations converge to x ≈ 0.3820." },
+  { q:"Newton's Method fails when f'(xₙ) =", opts:["1","-1","0","f(xₙ)"], ans:2, exp:"If f'(xₙ) = 0, the Newton update formula divides by zero, making the method undefined. The iteration cannot proceed." },
+  { q:"Which method generally converges FASTER to a root?", opts:["One-Point Iteration (first order)","Newton's Method (quadratic)","Trapezoidal Rule","Simpson's Rule"], ans:1, exp:"Newton's Method has quadratic convergence — errors decrease as the square of the previous error. One-point iteration typically has only linear convergence." },
+  { q:"The condition |φ'(α)| < 1 guarantees that fixed-point iteration:", opts:["Diverges","Converges to α","Gives an exact root","Has no solution"], ans:1, exp:"If the magnitude of φ' at the root is less than 1, the contraction mapping principle guarantees convergence of the iteration to that fixed point." },
+  { q:"In a semicircle parametrised as x = cos(t), y = sin(t), what is dx?", opts:["cos(t) dt","sin(t) dt","−sin(t) dt","−cos(t) dt"], ans:2, exp:"Differentiating x = cos(t) gives dx/dt = −sin(t), so dx = −sin(t) dt." },
+  { q:"Evaluating ∮_C y dy around the circle x² + y² = 16 (counterclockwise) gives:", opts:["2π","4π","0","16π"], ans:2, exp:"Using parametrisation y = 4sin(t), dy = 4cos(t) dt, the integral becomes 16∫₀²π sin(t)cos(t) dt = 8∫₀²π sin(2t) dt = 0." },
+  { q:"The line integral ∫_C (2xy−y⁴+3)dx + (x²−4xy³)dy from (1,0) to (2,1) equals:", opts:["5","8","3","10"], ans:0, exp:"Since ∂P/∂y = ∂Q/∂x, the field is conservative. The potential φ = x²y − xy⁴ + 3x. Then φ(2,1) − φ(1,0) = 8 − 3 = 5." },
+];
+
+const entQuestions = [
+  // ENTREPRENEURSHIP FOUNDATIONS
+  { q:"Entrepreneurship can BEST be defined as:", opts:["Starting any type of business","The process of creating, organizing, and managing a new venture to achieve profit or social goals","Working as an employee in a company","The study of economics and finance"], ans:1, exp:"Entrepreneurship involves identifying opportunities, marshalling resources, and creating ventures — with the goal of generating value, whether financial or social." },
+  { q:"Which of the following is NOT a characteristic of a successful entrepreneur?", opts:["Risk-taking ability","Strong leadership skills","Fear of failure and avoidance of challenges","Innovative thinking"], ans:2, exp:"Successful entrepreneurs embrace calculated risks and learn from failure. Fear of failure and avoidance of challenges are ANTI-entrepreneurial traits." },
+  { q:"Innovation in entrepreneurship primarily refers to:", opts:["Copying existing products","Introducing new ideas, products, processes, or methods that create value","Reducing the workforce","Maintaining the status quo"], ans:1, exp:"Innovation is the application of new ideas to create or improve products, processes, or services. It is a core driver of entrepreneurial value creation." },
+  { q:"A business plan is MOST useful for:", opts:["Confusing investors","Mapping out the business idea, strategies, and financial projections","Avoiding government regulations","Paying employees"], ans:1, exp:"A business plan serves as a blueprint — it outlines the business concept, market analysis, strategy, operations, and financial projections for investors and the entrepreneur." },
+  { q:"The term 'opportunity recognition' in entrepreneurship means:", opts:["Recognising competitors","Identifying and evaluating potential business ideas that meet market needs","Registering a trademark","Hiring the right employees"], ans:1, exp:"Opportunity recognition is the process of identifying gaps in the market, unmet needs, or emerging trends that can be turned into a viable business concept." },
+  { q:"Which of the following BEST describes an entrepreneur?", opts:["A government employee who implements policies","A risk-taker who creates and manages a business venture","A bank manager who approves loans","A teacher who trains students"], ans:1, exp:"An entrepreneur is someone who identifies opportunities, assumes financial and operational risk, and builds a business to exploit those opportunities." },
+  { q:"Intrapreneur refers to:", opts:["An entrepreneur who works internationally","An employee who acts entrepreneurially within an existing organisation","A government-backed entrepreneur","A farmer who innovates in agriculture"], ans:1, exp:"Intrapreneurship (corporate entrepreneurship) describes employees who apply entrepreneurial thinking — innovation, risk-taking, initiative — within their existing organisation." },
+  { q:"Which of the following is a source of business ideas?", opts:["Ignoring market trends","Observing problems in daily life","Copying failed businesses","Avoiding customer feedback"], ans:1, exp:"Many successful businesses start by solving everyday problems. Observing frustrations and unmet needs in daily life is one of the richest sources of entrepreneurial ideas." },
+  { q:"A feasibility study is conducted to:", opts:["Register a business name","Determine whether a business idea is viable and can succeed","Recruit employees","Advertise a product"], ans:1, exp:"A feasibility study analyses technical, financial, market, and operational aspects of a proposed venture to determine whether it is worth pursuing before investing resources." },
+  { q:"The acronym SWOT stands for:", opts:["Strength, Weakness, Opportunity, Threat","Speed, Weight, Output, Time","Sales, Work, Operations, Technology","Supply, Wealth, Orders, Trade"], ans:0, exp:"SWOT Analysis is a strategic tool that examines internal Strengths and Weaknesses and external Opportunities and Threats facing a business." },
+  
+  // TYPES OF BUSINESS / FORMS
+  { q:"A Sole Proprietorship is a business owned and operated by:", opts:["Two or more partners","The government","One individual","A group of shareholders"], ans:2, exp:"A sole proprietorship is the simplest business form — owned and run by a single individual who has full control and bears all risks and profits." },
+  { q:"The MAIN disadvantage of a sole proprietorship is:", opts:["Simple setup","Full owner control","Unlimited liability","Low taxation"], ans:2, exp:"In a sole proprietorship, the owner has unlimited personal liability — creditors can pursue personal assets if the business cannot meet its debts." },
+  { q:"A Partnership involves:", opts:["One owner only","Two or more persons sharing ownership, profits, and liabilities","Government ownership","Anonymous investors only"], ans:1, exp:"A partnership is formed by two or more people who agree to share ownership, decision-making, profits, and liabilities of a business." },
+  { q:"A Limited Liability Company (LLC) gives owners the benefit of:", opts:["Unlimited personal liability","Protection from personal liability for business debts","No taxation","Government ownership"], ans:1, exp:"An LLC separates personal and business assets — owners (members) are not personally liable for business debts beyond their investment, protecting personal wealth." },
+  { q:"Which business structure can raise capital most easily by issuing shares?", opts:["Sole proprietorship","Partnership","Public Limited Company (PLC)","Cooperative"], ans:2, exp:"A Public Limited Company (PLC) can sell shares to the general public on the stock exchange, making it the most efficient structure for raising large amounts of capital." },
+  
+  // INNOVATION & CREATIVITY
+  { q:"Which of the following is an example of product innovation?", opts:["Changing the company logo","Introducing a brand new smartphone with unique features","Moving to a different location","Hiring more staff"], ans:1, exp:"Product innovation involves introducing a new or significantly improved product. A new smartphone with unique features that did not previously exist is a classic example." },
+  { q:"Process innovation refers to:", opts:["Creating a new product","Improving the WAY a product is manufactured or delivered","Changing the business name","Reducing the workforce"], ans:1, exp:"Process innovation focuses on improving production methods, delivery systems, or internal processes to increase efficiency or reduce costs — not necessarily changing the product itself." },
+  { q:"Creativity in entrepreneurship is BEST defined as:", opts:["The ability to copy competitors","The ability to generate new and useful ideas","Strict adherence to existing rules","Avoiding change"], ans:1, exp:"Creativity is the cognitive process of generating novel, useful ideas. In entrepreneurship, it fuels innovation and problem-solving." },
+  { q:"Which of the following is a barrier to innovation?", opts:["Open communication","Willingness to take risks","Fear of failure and rigid organisational culture","Access to resources"], ans:2, exp:"Fear of failure discourages experimentation, and a rigid culture resists change — both are major organisational barriers to innovation." },
+  { q:"The concept of 'Creative Destruction' was introduced by:", opts:["Peter Drucker","Joseph Schumpeter","Adam Smith","Karl Marx"], ans:1, exp:"Joseph Schumpeter introduced Creative Destruction — the idea that entrepreneurial innovation continuously destroys old industries and creates new ones, driving economic progress." },
+  
+  // BUSINESS PLANNING
+  { q:"An Executive Summary in a business plan should:", opts:["Be the longest section","Provide a concise overview of the entire business plan","List all employees","Only discuss finances"], ans:1, exp:"The Executive Summary is a brief, compelling overview of the entire plan — it appears first but is usually written last. Investors often decide based on this section alone." },
+  { q:"Market analysis in a business plan involves:", opts:["Listing all employees","Studying target customers, competitors, and industry trends","Describing the founder's biography only","Planning social events"], ans:1, exp:"Market analysis examines the target market size, customer demographics, buying behaviour, competitor landscape, and industry trends to justify the business opportunity." },
+  { q:"A break-even point is the level of sales at which:", opts:["The business makes maximum profit","Total revenue equals total costs (no profit, no loss)","Fixed costs exceed variable costs","The business shuts down"], ans:1, exp:"The break-even point is where Total Revenue = Total Costs. Below this, the business makes a loss; above it, a profit. It is a critical planning metric." },
+  { q:"Working capital is defined as:", opts:["Total assets of a business","Current assets minus current liabilities","Long-term loans","Total revenue"], ans:1, exp:"Working capital = Current Assets − Current Liabilities. It measures the short-term liquidity and operational efficiency of a business." },
+  { q:"Which of the following is a FIXED cost?", opts:["Raw materials","Sales commission","Factory rent","Packaging costs"], ans:2, exp:"Fixed costs remain constant regardless of production volume. Factory rent does not change whether you produce 100 or 10,000 units." },
+  { q:"Variable costs are costs that:", opts:["Stay the same at all output levels","Change in proportion to the level of production or sales","Are paid only once","Are always lower than fixed costs"], ans:1, exp:"Variable costs rise and fall with output — e.g., raw materials, direct labour, and packaging all increase as production increases." },
+  
+  // FUNDING & FINANCE
+  { q:"Angel investors are:", opts:["Bank managers who give business loans","Wealthy individuals who invest personal funds in start-ups, usually for equity","Government officials who fund public projects","Employees who work for free"], ans:1, exp:"Angel investors are high-net-worth individuals who provide seed capital to early-stage startups, typically in exchange for equity or convertible debt." },
+  { q:"Venture Capital is BEST described as:", opts:["Money borrowed from a bank","Funding provided to early-stage, high-growth startups in exchange for equity","Government grants to public schools","Funds raised through stock market listing"], ans:1, exp:"Venture Capital firms invest in startups with high growth potential, taking equity stakes and providing mentorship in return for potentially large financial returns." },
+  { q:"Bootstrapping in entrepreneurship means:", opts:["Borrowing heavily from banks","Funding a business using personal savings and revenue generated by the business itself","Issuing shares to the public","Receiving government grants"], ans:1, exp:"Bootstrapping means building a business with minimal external funding — using personal savings, reinvesting profits, and keeping costs low to maintain independence." },
+  { q:"Which of the following is NOT a source of business financing?", opts:["Bank loans","Friends and family","Ignoring creditors","Crowdfunding"], ans:2, exp:"Ignoring creditors is not a financing source — it leads to legal problems. Bank loans, family funding, and crowdfunding are all legitimate financing channels." },
+  { q:"Crowdfunding allows entrepreneurs to:", opts:["Borrow money from a single wealthy investor","Raise small amounts of money from many people, usually via online platforms","Issue bonds to the public","Obtain government contracts"], ans:1, exp:"Crowdfunding platforms (like Kickstarter, GoFundMe) allow entrepreneurs to raise capital by collecting small contributions from many individuals — often in exchange for rewards, equity, or pre-orders." },
+  
+  // MARKETING
+  { q:"The 4Ps of Marketing are:", opts:["Product, Price, Place, Promotion","People, Process, Payment, Profit","Plan, Position, Price, Pitch","Product, Profit, Place, People"], ans:0, exp:"The Marketing Mix consists of Product, Price, Place (distribution), and Promotion — the four controllable elements a business uses to satisfy customer needs." },
+  { q:"A Unique Selling Proposition (USP) is:", opts:["A feature that makes a product clearly better or different from competitors","The total sales revenue of a company","A government licence to sell products","The price at which a product is sold"], ans:0, exp:"A USP is the distinct benefit or characteristic that makes your product or service stand out from competitors and gives customers a compelling reason to choose you." },
+  { q:"Market segmentation involves:", opts:["Selling to every customer equally","Dividing the market into distinct groups with similar needs or characteristics","Reducing the product range","Merging with a competitor"], ans:1, exp:"Market segmentation divides a broad market into subgroups (segments) based on demographics, psychographics, behaviour, or geography so marketing can be more precisely targeted." },
+  { q:"Which of the following is an example of a promotional strategy?", opts:["Reducing production costs","Offering discounts and running social media adverts","Moving the factory","Hiring an accountant"], ans:1, exp:"Promotion includes advertising, discounts, public relations, social media campaigns, and other activities designed to communicate the product's value and stimulate sales." },
+  { q:"A target market refers to:", opts:["All possible customers in the world","The specific group of consumers a business aims its products and marketing at","The company's internal staff","Government buyers only"], ans:1, exp:"A target market is the defined segment of consumers most likely to buy your product. Identifying it allows businesses to focus resources effectively." },
+  
+  // LEADERSHIP & MANAGEMENT
+  { q:"Leadership in entrepreneurship means:", opts:["Controlling every small decision","Inspiring, motivating, and guiding a team towards achieving business goals","Avoiding responsibility","Following rather than leading"], ans:1, exp:"Effective entrepreneurial leadership involves setting vision, inspiring commitment, empowering teams, and guiding the organisation through uncertainty and change." },
+  { q:"Which leadership style gives team members the MOST autonomy?", opts:["Autocratic","Democratic","Laissez-faire","Transactional"], ans:2, exp:"Laissez-faire leadership provides minimal direction, giving team members maximum freedom to make decisions. It works best with highly skilled, self-motivated individuals." },
+  { q:"Decision-making is critical in entrepreneurship because:", opts:["It delays business activities","Poor decisions can lead to business failure, while good ones drive success","It always requires a committee","Decisions never affect outcomes"], ans:1, exp:"Every entrepreneurial decision — about products, pricing, hiring, investment — carries consequences. Sound decision-making is central to sustainable business success." },
+  { q:"Time management for an entrepreneur involves:", opts:["Doing everything yourself","Prioritising high-value tasks, delegating where possible, and minimising waste","Avoiding work as much as possible","Working 24 hours without rest"], ans:1, exp:"Effective time management means identifying high-impact activities, delegating low-value tasks, and using planning tools to stay productive without burning out." },
+  { q:"Delegation in management means:", opts:["Doing everything yourself","Assigning tasks and authority to other team members while retaining accountability","Ignoring subordinates","Micromanaging every task"], ans:1, exp:"Delegation involves transferring specific tasks or decision-making authority to capable team members, freeing the entrepreneur to focus on higher-level strategy." },
+  
+  // LEGAL / ETHICS
+  { q:"Business ethics refers to:", opts:["Making as much profit as possible by any means","The application of ethical principles to business activities and decisions","Avoiding all government regulations","Deceiving customers for profit"], ans:1, exp:"Business ethics applies moral principles — honesty, fairness, integrity, transparency — to all business decisions and relationships with stakeholders." },
+  { q:"A trademark protects:", opts:["A business idea","Distinctive signs, logos, or names that identify a company's products or services","A manufacturing process","A company's financial data"], ans:1, exp:"A trademark is an intellectual property right that protects distinctive identifiers — words, logos, symbols — that distinguish one company's products from competitors." },
+  { q:"Corporate Social Responsibility (CSR) means:", opts:["Maximising shareholder profit only","A company's commitment to operating ethically and contributing positively to society and the environment","Avoiding taxes legally","Expanding into new markets"], ans:1, exp:"CSR is a business model where companies integrate social and environmental concerns into their operations and interactions, going beyond pure profit maximisation." },
+  { q:"Intellectual property (IP) rights protect:", opts:["Physical property only","Creations of the mind, including inventions, designs, and brand names","Employee rights only","Company bank accounts"], ans:1, exp:"Intellectual property law protects creations of the intellect — inventions (patents), creative works (copyright), brand identifiers (trademarks), and designs." },
+  { q:"Which document legally establishes a business in Nigeria?", opts:["Tax receipt","Certificate of Incorporation from the Corporate Affairs Commission (CAC)","Business card","Bank statement"], ans:1, exp:"In Nigeria, businesses are formally registered with the Corporate Affairs Commission (CAC), which issues a Certificate of Incorporation — the legal proof of the company's existence." },
+  
+  // GROWTH / SCALING
+  { q:"Scaling a business means:", opts:["Reducing operations to cut costs","Growing the business in a way that increases revenue faster than costs","Closing the business","Merging with the government"], ans:1, exp:"Scaling is growing a business efficiently — revenue and impact increase significantly while operational costs grow at a slower rate, improving profitability." },
+  { q:"A franchise is:", opts:["A new type of partnership","A business model where a franchisor licences its brand and system to a franchisee to operate a business","A government business programme","A form of NGO"], ans:1, exp:"Franchising allows an entrepreneur (franchisee) to operate under an established brand (franchisor), using its systems and name in exchange for fees or royalties." },
+  { q:"Which of the following BEST indicates a business is growing?", opts:["Increasing customer complaints","Rising revenue, expanding customer base, and improving profitability","Reducing employees","Closing branches"], ans:1, exp:"Business growth indicators include revenue growth, customer acquisition, market share expansion, profit improvement, and the ability to attract investment." },
+  { q:"An exit strategy for an entrepreneur refers to:", opts:["Firing all employees","A planned approach for leaving or selling the business, e.g., acquisition or IPO","Closing the business suddenly","Avoiding investors"], ans:1, exp:"An exit strategy defines how an entrepreneur plans to leave the business — through sale, merger, IPO, management buyout, or passing it on — while maximising returns." },
+  { q:"E-commerce in entrepreneurship refers to:", opts:["Electronic communication within a company","Buying and selling of products and services over the internet","Government online taxation","Electronic payroll systems"], ans:1, exp:"E-commerce encompasses all commercial transactions conducted electronically over the internet — including online retail, B2B sales, digital services, and digital marketplaces." },
+  { q:"Social entrepreneurship focuses on:", opts:["Maximising shareholder returns only","Creating ventures that solve social, cultural, or environmental problems while generating revenue","Avoiding community engagement","Purely commercial activities"], ans:1, exp:"Social entrepreneurship uses business models to address social, cultural, or environmental challenges — the primary goal is social impact, though sustainability requires financial viability." },
+  { q:"Which of the following is an example of disruptive innovation?", opts:["A company making a slightly improved version of an existing product","Uber replacing traditional taxi services using a smartphone app","A factory painting its walls","A business hiring more accountants"], ans:1, exp:"Disruptive innovation fundamentally changes an industry. Uber disrupted the taxi industry by using technology to create a more convenient, price-competitive alternative." },
+  { q:"Networking in entrepreneurship is important because:", opts:["It wastes time","It helps build relationships that can lead to partnerships, funding, mentorship, and new customers","It increases costs","It replaces the need for a business plan"], ans:1, exp:"Entrepreneurial networks — industry contacts, mentors, investors, customers — are critical resources. Most opportunities, partnerships, and funding come through relationships." },
+  { q:"The Nigerian government body responsible for promoting small businesses is:", opts:["INEC","SMEDAN (Small and Medium Enterprises Development Agency of Nigeria)","NCC","NNPC"], ans:1, exp:"SMEDAN was established to promote and develop small and medium enterprises in Nigeria, providing support services, training, and access to financing." },
+  { q:"Which of the following BEST describes a start-up?", opts:["Any old established business","A newly formed company designed to grow quickly, usually with a scalable and innovative business model","A government agency","A non-profit organisation"], ans:1, exp:"A start-up is a young company designed for rapid, scalable growth — typically leveraging innovation, technology, or a novel business model to capture a large market." },
+];
+
+const mathTheory = [
+  {
+    n:1, marks:10,
+    q:"(a) State the Trapezoidal Rule formula and explain what each term represents. (b) Use the Trapezoidal Rule with 5 ordinates to evaluate ∫₀² 1/(x²+1) dx. Show ALL working clearly.",
+    guide:`<strong>(a) Formula:</strong> ∫ₐᵇ f(x)dx ≈ (h/2)[y₀ + yₙ + 2(y₁+y₂+…+yₙ₋₁)]<br>
+    Where: h = (b−a)/n is the step size; y₀ and yₙ are the first and last ordinates (×1); y₁ to yₙ₋₁ are interior ordinates (×2). [3 marks]<br><br>
+    <strong>(b) Solution:</strong><br>
+    a=0, b=2, 5 ordinates → n=4 subintervals; h = (2−0)/4 = 0.5<br>
+    x: 0, 0.5, 1.0, 1.5, 2.0<br>
+    f(0)=1.0000, f(0.5)=0.8000, f(1.0)=0.5000, f(1.5)=0.3077, f(2.0)=0.2000<br>
+    Interior sum = 0.8000+0.5000+0.3077 = 1.6077; ×2 = 3.2154<br>
+    End ordinates = 1.0000+0.2000 = 1.2000<br>
+    Total = 1.2000+3.2154 = 4.4154<br>
+    ∫ ≈ (0.5/2)×4.4154 = 0.25×4.4154 = <strong>1.1039</strong> [7 marks]`
+  },
+  {
+    n:2, marks:10,
+    q:"(a) Explain why Simpson's Rule generally gives a more accurate result than the Trapezoidal Rule. (b) Apply Simpson's Rule with 5 ordinates to evaluate ∫₀¹ 1/(x²+1) dx.",
+    guide:`<strong>(a) Explanation:</strong> The Trapezoidal Rule approximates the curve with straight lines between each pair of points, missing the curvature. Simpson's Rule fits a parabola through every THREE consecutive points, capturing the curvature of the function. Since most functions behave more like polynomials than straight lines over small intervals, the parabolic approximation is much more accurate for the same number of points. [4 marks]<br><br>
+    <strong>(b) Solution:</strong><br>
+    a=0, b=1; 5 ordinates → 4 subintervals (even ✓); h = 0.25<br>
+    x: 0, 0.25, 0.5, 0.75, 1.0<br>
+    y₀=1.0000, y₁=0.9412, y₂=0.8000, y₃=0.6400, y₄=0.5000<br>
+    Odd: y₁+y₃ = 0.9412+0.6400 = 1.5812; ×4 = 6.3248<br>
+    Even interior: y₂ = 0.8000; ×2 = 1.6000<br>
+    Ends: y₀+y₄ = 1.0000+0.5000 = 1.5000<br>
+    Total = 1.5000+6.3248+1.6000 = 9.4248<br>
+    ∫ ≈ (0.25/3)×9.4248 = <strong>0.7854</strong> (≈ π/4, which is the exact answer!) [6 marks]`
+  },
+  {
+    n:3, marks:10,
+    q:"Use Newton's Method to find an approximate root of f(x) = x³ − x − 1 = 0, starting with x₀ = 1.5. Perform 4 iterations and state the convergence criterion you used.",
+    guide:`f(x) = x³ − x − 1; f'(x) = 3x² − 1<br>
+    Formula: xₙ₊₁ = xₙ − f(xₙ)/f'(xₙ) [2 marks]<br><br>
+    <strong>Iteration 1:</strong> x₀=1.5; f(1.5)=3.375−1.5−1=0.875; f'(1.5)=6.75−1=5.75<br>
+    x₁ = 1.5 − 0.875/5.75 = 1.5 − 0.1522 = <strong>1.3478</strong><br><br>
+    <strong>Iteration 2:</strong> f(1.3478)=2.4438−1.3478−1=0.0960; f'(1.3478)=5.4488−1=4.4488<br>
+    x₂ = 1.3478 − 0.0960/4.4488 = <strong>1.3262</strong><br><br>
+    <strong>Iteration 3:</strong> f(1.3262)≈0.0047; f'(1.3262)≈4.272<br>
+    x₃ = 1.3262 − 0.0047/4.272 = <strong>1.3247</strong><br><br>
+    <strong>Iteration 4:</strong> x₄ ≈ <strong>1.3247</strong> (converged)<br><br>
+    Convergence criterion: Stop when |xₙ₊₁ − xₙ| < ε (e.g., 10⁻⁴). [8 marks]`
+  },
+  {
+    n:4, marks:10,
+    q:"Evaluate the line integral ∫_C (x²−3y)dx + xy² dy from A(1,2) to B(2,8) along the parabola y = 2x². Show full parametrisation and integration steps.",
+    guide:`<strong>Step 1:</strong> Parametrise: y = 2x², so dy = 4x dx; x ranges from 1 to 2. [2 marks]<br><br>
+    <strong>Step 2:</strong> Substitute:<br>
+    x²−3y = x²−6x² = −5x²<br>
+    xy² = x(2x²)² = x·4x⁴ = 4x⁵; and xy²dy = 4x⁵·4x dx = 16x⁶ dx<br>
+    Combined integrand: (16x⁶ − 5x²) dx [3 marks]<br><br>
+    <strong>Step 3:</strong> Integrate:<br>
+    ∫₁² (16x⁶−5x²) dx = [16x⁷/7 − 5x³/3]₁²<br>
+    At x=2: 16(128)/7 − 5(8)/3 = 2048/7 − 40/3<br>
+    At x=1: 16/7 − 5/3<br>
+    Difference: 2032/7 − 35/3 = 6096/21 − 245/21 = 5851/21 [5 marks]<br><br>
+    <strong>Answer: 5851/21 ≈ 278.619</strong>`
+  },
+  {
+    n:5, marks:10,
+    q:"(a) State Green's Theorem. (b) Use Green's Theorem to evaluate ∮_C (−y dx + x dy) where C is the circle x² + y² = 1 traversed counterclockwise. (c) Explain the geometric interpretation of your result.",
+    guide:`<strong>(a) Green's Theorem:</strong><br>
+    ∮_C P dx + Q dy = ∬_R (∂Q/∂x − ∂P/∂y) dx dy<br>
+    where C is a positively oriented (counterclockwise), closed curve and R is the enclosed region. [3 marks]<br><br>
+    <strong>(b) Solution:</strong><br>
+    P = −y, Q = x<br>
+    ∂Q/∂x = 1; ∂P/∂y = −1<br>
+    ∂Q/∂x − ∂P/∂y = 1−(−1) = 2<br>
+    ∬_R 2 dA = 2 × Area(unit disk) = 2 × π(1)² = <strong>2π</strong> [5 marks]<br><br>
+    <strong>(c) Geometric Meaning:</strong><br>
+    The integrand (∂Q/∂x − ∂P/∂y) = 2 represents the curl/rotation of the vector field F=(−y, x) at every point. Green's Theorem shows the total circulation around the boundary equals twice the area — confirming that F is a rotation field and the result is proportional to the enclosed area. [2 marks]`
+  }
+];
+
+const entTheory = [
+  {
+    n:1, marks:10,
+    q:"(a) Distinguish between an entrepreneur and an intrapreneur, giving TWO examples of each. (b) Describe FIVE key characteristics of a successful entrepreneur.",
+    guide:`<strong>(a) Entrepreneur vs Intrapreneur:</strong><br>
+    An <em>entrepreneur</em> creates and manages a new, independent business, bearing all risks and rewards. Examples: Aliko Dangote (Dangote Industries), Tony Elumelu (Heirs Holdings). [3 marks]<br>
+    An <em>intrapreneur</em> applies entrepreneurial thinking within an existing organisation. Examples: Google employees who developed Gmail; 3M employees who created Post-it Notes. [2 marks]<br><br>
+    <strong>(b) Five Characteristics:</strong><br>
+    1. <em>Risk-taking</em> — willingness to invest resources in uncertain ventures<br>
+    2. <em>Innovation</em> — ability to generate new ideas and solutions<br>
+    3. <em>Resilience</em> — persistence in the face of failure and setbacks<br>
+    4. <em>Vision</em> — ability to identify opportunities and long-term direction<br>
+    5. <em>Leadership</em> — inspiring and motivating a team to achieve goals [5 marks]`
+  },
+  {
+    n:2, marks:10,
+    q:"Describe the key components of a business plan, explaining the purpose of each component. Why is a business plan important for a start-up entrepreneur?",
+    guide:`<strong>Key Components:</strong><br>
+    1. <em>Executive Summary</em> — concise overview of the entire plan; hooks investors [1 mark]<br>
+    2. <em>Business Description</em> — mission, vision, goals, and legal structure [1 mark]<br>
+    3. <em>Market Analysis</em> — target market, competitor analysis, industry trends [1 mark]<br>
+    4. <em>Organisation & Management</em> — team structure, key personnel [1 mark]<br>
+    5. <em>Product/Service Description</em> — what is offered and its value proposition [1 mark]<br>
+    6. <em>Marketing & Sales Strategy</em> — how customers will be reached and acquired [1 mark]<br>
+    7. <em>Financial Projections</em> — revenue, expenses, break-even, cash flow [1 mark]<br><br>
+    <strong>Importance:</strong> A business plan forces the entrepreneur to think critically through all aspects before launching, serves as a roadmap for operations, attracts investors and lenders, identifies potential risks early, and provides benchmarks for measuring progress. [3 marks]`
+  },
+  {
+    n:3, marks:10,
+    q:"(a) Explain the concept of 'Creative Destruction' as used in entrepreneurship theory. (b) Give TWO real-world examples of creative destruction and analyse how they changed their respective industries.",
+    guide:`<strong>(a) Creative Destruction:</strong><br>
+    Coined by economist Joseph Schumpeter, Creative Destruction describes the process by which entrepreneurial innovation continuously displaces older industries, products, and business models with new ones. It is the engine of capitalist progress — old economic structures are 'destroyed' as new, more efficient ones emerge. The process creates short-term disruption but drives long-term growth and welfare improvement. [4 marks]<br><br>
+    <strong>(b) Two Examples:</strong><br>
+    1. <em>Smartphones destroying digital cameras:</em> Companies like Nokia, Kodak, and Canon's dedicated camera division were devastated when smartphones integrated high-quality cameras, making standalone cameras largely unnecessary for average consumers. Apple and Samsung disrupted an entire industry while creating a new one (the app ecosystem). [3 marks]<br>
+    2. <em>Streaming destroying video rental:</em> Netflix's streaming model destroyed Blockbuster and the physical video rental industry. By offering unlimited on-demand content at a low monthly fee, streaming fundamentally changed how people consume entertainment, while creating thousands of new content production jobs. [3 marks]`
+  },
+  {
+    n:4, marks:10,
+    q:"Discuss FIVE sources of financing available to entrepreneurs in Nigeria, highlighting the advantages and disadvantages of each.",
+    guide:`<strong>Five Financing Sources in Nigeria:</strong><br><br>
+    1. <em>Personal Savings (Bootstrapping)</em> — no interest, retains full control; disadvantage: limited funds, personal financial risk [2 marks]<br>
+    2. <em>Bank Loans</em> — significant capital available; disadvantage: high interest rates (15–25% in Nigeria), collateral required, lengthy approval process [2 marks]<br>
+    3. <em>Angel Investors</em> — bring funds + mentorship + networks; disadvantage: equity dilution, loss of some control [2 marks]<br>
+    4. <em>Government Schemes (e.g., NIRSAL, BOI, N-Power)</em> — low-interest or grants; disadvantage: bureaucratic processes, limited availability [2 marks]<br>
+    5. <em>Microfinance Institutions</em> — accessible for small businesses without bank collateral; disadvantage: smaller amounts, higher interest than commercial banks [2 marks]`
+  },
+  {
+    n:5, marks:10,
+    q:"(a) What is Corporate Social Responsibility (CSR)? (b) Analyse why CSR is important for entrepreneurial businesses in Nigeria. (c) Give TWO examples of Nigerian companies practising effective CSR.",
+    guide:`<strong>(a) Definition:</strong><br>
+    CSR is a self-regulating business model in which companies integrate social, environmental, and ethical considerations into their operations and stakeholder interactions — going beyond mere profit maximisation to benefit society. [2 marks]<br><br>
+    <strong>(b) Importance in Nigeria:</strong><br>
+    1. Builds brand reputation and customer loyalty in a market where trust is critical<br>
+    2. Attracts and retains talented employees who value purpose-driven organisations<br>
+    3. Maintains social licence to operate in communities (especially extractive industries)<br>
+    4. Can substitute for weak government infrastructure (e.g., building roads, schools)<br>
+    5. Reduces regulatory risk and improves relations with government [4 marks]<br><br>
+    <strong>(c) Examples:</strong><br>
+    1. <em>Dangote Foundation</em> — education scholarships, nutrition programmes, support for farmers and smallholder businesses across Nigeria [2 marks]<br>
+    2. <em>MTN Foundation Nigeria</em> — STEM education funding, ICT training for youths, health initiatives, and community development projects [2 marks]`
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+const state = {
+  math: { answered: new Set(), scores: 0 },
+  ent: { answered: new Set(), scores: 0 }
+};
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+function renderMCQ(questions, containerId, subject) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = questions.map((q, i) => `
+    <div class="q-card" id="${subject}-qcard-${i}">
+      <span class="q-number">Question ${i+1} of ${questions.length}</span>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((opt, j) => `
+          <button class="option-btn" id="${subject}-opt-${i}-${j}"
+            onclick="checkAnswer('${subject}', ${i}, ${j})">
+            <span class="opt-label">${['A','B','C','D'][j]}.</span>
+            <span>${opt}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="${subject}-fb-${i}"></div>
+    </div>
+  `).join('');
+}
+
+function renderTheory(theories, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = theories.map(t => `
+    <div class="theory-card">
+      <span class="q-number">Theory Question ${t.n}</span>
+      <div class="theory-q">
+        ${t.q} <span class="marks-badge">[${t.marks} Marks]</span>
+      </div>
+      <button class="toggle-guide" onclick="toggleGuide(this)">📋 Show Marking Guide</button>
+      <div class="marking-guide" style="display:none;">
+        <h4>✅ Marking Guide / Sample Answer</h4>
+        <p>${t.guide}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  INTERACTION
+// ═══════════════════════════════════════════════════════
+function checkAnswer(subj, qIdx, optIdx) {
+  const questions = subj === 'math' ? mathQuestions : entQuestions;
+  const q = questions[qIdx];
+  
+  // Disable all options for this question
+  for (let j = 0; j < 4; j++) {
+    const btn = document.getElementById(`${subj}-opt-${qIdx}-${j}`);
+    if (btn) btn.disabled = true;
+  }
+
+  const isCorrect = optIdx === q.ans;
+  const selectedBtn = document.getElementById(`${subj}-opt-${qIdx}-${optIdx}`);
+  const correctBtn = document.getElementById(`${subj}-opt-${qIdx}-${q.ans}`);
+  const fb = document.getElementById(`${subj}-fb-${qIdx}`);
+
+  selectedBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) correctBtn.classList.add('correct');
+
+  fb.className = `feedback-box show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<strong>${isCorrect ? '✅ Correct!' : '❌ Wrong — Correct answer: ' + ['A','B','C','D'][q.ans]}</strong>${q.exp}`;
+
+  if (!state[subj].answered.has(qIdx)) {
+    state[subj].answered.add(qIdx);
+    if (isCorrect) state[subj].scores++;
+    updateProgress(subj, questions.length);
+  }
+}
+
+function updateProgress(subj, total) {
+  const count = state[subj].answered.size;
+  const pct = Math.round((count / total) * 100);
+  document.getElementById(`${subj}-progress-label`).textContent = `${count} of ${total} answered`;
+  document.getElementById(`${subj}-progress-bar`).style.width = pct + '%';
+}
+
+function submitExam(subj) {
+  const questions = subj === 'math' ? mathQuestions : entQuestions;
+  const score = state[subj].scores;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  let grade, gradeClass, remark;
+  if (pct >= 70) { grade='A'; gradeClass='grade-a'; remark='Excellent Performance'; }
+  else if (pct >= 60) { grade='B'; gradeClass='grade-b'; remark='Good Performance'; }
+  else if (pct >= 50) { grade='C'; gradeClass='grade-c'; remark='Pass'; }
+  else if (pct >= 40) { grade='D'; gradeClass='grade-d'; remark='Poor Pass'; }
+  else { grade='F'; gradeClass='grade-f'; remark='Fail — Revision Required'; }
+
+  const panel = document.getElementById(`${subj}-score-panel`);
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div class="score-panel">
+      <h3>📊 Examination Result</h3>
+      <div class="score-grid">
+        <div class="score-item">
+          <span class="score-num">${score}</span>
+          <span class="score-label">Score</span>
+        </div>
+        <div class="score-item">
+          <span class="score-num">${total}</span>
+          <span class="score-label">Total</span>
+        </div>
+        <div class="score-item">
+          <span class="score-num">${pct}%</span>
+          <span class="score-label">Percentage</span>
+        </div>
+      </div>
+      <div class="grade-badge ${gradeClass}">Grade ${grade} — ${remark}</div>
+      <p style="margin-top:16px;color:#8aa4cc;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;">
+        You answered ${state[subj].answered.size} of ${total} questions. Unanswered questions score 0.
+      </p>
+    </div>
+  `;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.querySelector(`#subj-${subj} .submit-btn`).disabled = true;
+}
+
+function toggleGuide(btn) {
+  const guide = btn.nextElementSibling;
+  const isHidden = guide.style.display === 'none';
+  guide.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? '📋 Hide Marking Guide' : '📋 Show Marking Guide';
+}
+
+function showSubject(subj) {
+  document.querySelectorAll('.subject-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`subj-${subj}`).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+renderMCQ(mathQuestions, 'math-questions', 'math');
+renderMCQ(entQuestions, 'ent-questions', 'ent');
+renderTheory(mathTheory, 'math-theory');
+renderTheory(entTheory, 'ent-theory');
+</script>
+</body>
+</html>
